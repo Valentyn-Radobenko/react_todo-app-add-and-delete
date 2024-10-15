@@ -9,11 +9,11 @@ type Props = {
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   completedTodos: Todo[];
   textField: React.RefObject<HTMLInputElement>;
-  setErrorMessage: React.Dispatch<React.SetStateAction<Error>>
+  setErrorMessage: React.Dispatch<React.SetStateAction<Error>>;
   query: string;
   setQuery: (query: string) => void;
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
+  isInputLoading: boolean;
+  setIsInputLoading: (isLoading: boolean) => void;
   setTempTodo: (tempTodo: null | Todo) => void;
 };
 
@@ -25,8 +25,8 @@ export const Header: React.FC<Props> = ({
   setErrorMessage,
   query,
   setQuery,
-  isLoading,
-  setIsLoading,
+  isInputLoading,
+  setIsInputLoading,
   setTempTodo,
 }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,6 +37,7 @@ export const Header: React.FC<Props> = ({
       setTimeout(() => {
         setErrorMessage(Error.none);
       }, 3000);
+
       return;
     }
 
@@ -47,7 +48,7 @@ export const Header: React.FC<Props> = ({
       completed: false,
     };
 
-    setIsLoading(true);
+    setIsInputLoading(true);
     setTempTodo(newTodo);
 
     addTodo(newTodo)
@@ -63,7 +64,7 @@ export const Header: React.FC<Props> = ({
         }, 3000);
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsInputLoading(false);
         setTempTodo(null);
       });
   };
@@ -89,7 +90,7 @@ export const Header: React.FC<Props> = ({
           ref={textField}
           value={query}
           onChange={e => setQuery(e.target.value)}
-          disabled={isLoading}
+          disabled={isInputLoading}
         />
       </form>
     </header>

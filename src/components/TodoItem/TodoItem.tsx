@@ -10,7 +10,8 @@ type Props = {
   completed: boolean;
   setErrorMessage: React.Dispatch<React.SetStateAction<Error>>;
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-  inputIsLoading?: boolean;
+  isInputLoading?: boolean;
+  deletingTodoIds: number[];
 };
 
 export const TodoItem: React.FC<Props> = ({
@@ -19,7 +20,8 @@ export const TodoItem: React.FC<Props> = ({
   completed,
   setErrorMessage,
   setTodos,
-  inputIsLoading = false,
+  isInputLoading = false,
+  deletingTodoIds,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,7 +80,8 @@ export const TodoItem: React.FC<Props> = ({
       <div
         data-cy="TodoLoader"
         className={classNames('modal', 'overlay', {
-          'is-active': isLoading || inputIsLoading,
+          'is-active':
+            isLoading || isInputLoading || deletingTodoIds.includes(id),
         })}
       >
         <div className="modal-background has-background-white-ter" />

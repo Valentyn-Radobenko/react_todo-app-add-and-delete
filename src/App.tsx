@@ -14,11 +14,12 @@ import { TodoItem } from './components/TodoItem';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [inputIsLoading, setInputIsLoading] = useState(false);
+  const [isInputLoading, setIsInputLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(Error.none);
   const [filter, setFilter] = useState(Filter.All);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [query, setQuery] = useState('');
+  const [deletingTodoIds, setDeletingTodoIds] = useState<number[]>([]);
 
   const textField = useRef<HTMLInputElement>(null);
 
@@ -54,7 +55,7 @@ export const App: React.FC = () => {
     if (textField.current) {
       textField.current.focus();
     }
-  }, [inputIsLoading]);
+  }, [isInputLoading, todos.length]);
 
   if (!todoService.USER_ID) {
     return <UserWarning />;
@@ -73,8 +74,8 @@ export const App: React.FC = () => {
           setErrorMessage={setErrorMessage}
           query={query}
           setQuery={setQuery}
-          isLoading={inputIsLoading}
-          setIsLoading={setInputIsLoading}
+          isInputLoading={isInputLoading}
+          setIsInputLoading={setIsInputLoading}
           setTempTodo={setTempTodo}
         />
 
@@ -83,6 +84,7 @@ export const App: React.FC = () => {
             todos={filteredTodos()}
             setTodos={setTodos}
             setErrorMessage={setErrorMessage}
+            deletingTodoIds={deletingTodoIds}
           />
 
           {tempTodo && (
@@ -92,19 +94,21 @@ export const App: React.FC = () => {
               completed={tempTodo.completed}
               setTodos={setTodos}
               setErrorMessage={setErrorMessage}
-              inputIsLoading={inputIsLoading}
+              isInputLoading={isInputLoading}
+              deletingTodoIds={deletingTodoIds}
             />
           )}
         </section>
 
         {todos.length > 0 && (
           <Footer
-            todos={todos}
             setTodos={setTodos}
             activeTodos={activeTodos}
+            completedTodos={completedTodos}
             setErrorMessage={setErrorMessage}
             filter={filter}
             setFilter={setFilter}
+            setDeletingTodoIds={setDeletingTodoIds}
           />
         )}
       </div>

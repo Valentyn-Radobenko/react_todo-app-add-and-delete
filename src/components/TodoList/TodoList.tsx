@@ -7,12 +7,14 @@ type Props = {
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
   setErrorMessage: React.Dispatch<React.SetStateAction<Error>>;
+  deletingTodoIds: number[];
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
   setErrorMessage,
   setTodos,
+  deletingTodoIds,
 }) => {
   return todos.map(({ id, title, completed }) => {
     return (
@@ -23,6 +25,7 @@ export const TodoList: React.FC<Props> = ({
         setTodos={setTodos}
         completed={completed}
         setErrorMessage={setErrorMessage}
+        deletingTodoIds={deletingTodoIds}
       />
     );
   });
